@@ -1,53 +1,53 @@
 const { HttpError, ctrlWrapper } = require("../utils");
 const {
-  listContacts,
-  getContactById,
-  addContact,
-  updateContact,
-  removeContact,
+  listContactsService,
+  getContactByIdService,
+  addContactService,
+  updateContactService,
+  removeContactService,
 } = require("../models/contacts");
 
-const getList = async (req, res, next) => {
-  const contacts = await listContacts();
+const getContactsList = async (req, res, next) => {
+  const contacts = await listContactsService();
   res.json(contacts);
 };
 
-const getById = async (req, res, next) => {
+const getContactById = async (req, res, next) => {
   const { contactId } = req.params;
-  const contact = await getContactById(contactId);
+  const contact = await getContactByIdService(contactId);
   if (!contact) {
-    throw HttpError(404, "Not found");
+    throw new HttpError(404, "Not found");
   }
   res.json(contact);
 };
 
-const add = async (req, res, next) => {
-  const newContact = await addContact(req.body);
+const addContact = async (req, res, next) => {
+  const newContact = await addContactService(req.body);
   res.status(201).json(newContact);
 };
 
-const deleteById = async (req, res, next) => {
+const deleteContactById = async (req, res, next) => {
   const { contactId } = req.params;
-  const deletedContact = await removeContact(contactId);
+  const deletedContact = await removeContactService(contactId);
   if (!deletedContact) {
-    throw HttpError(404, "Not found");
+    throw new HttpError(404, "Not found");
   }
   res.json({ message: "contact deleted" });
 };
 
-const updateById = async (req, res, next) => {
+const updateContactById = async (req, res, next) => {
   const { contactId } = req.params;
-  const updatedContact = await updateContact(contactId, req.body);
+  const updatedContact = await updateContactService(contactId, req.body);
   if (!updatedContact) {
-    throw HttpError(404, "Not found");
+    throw new HttpError(404, "Not found");
   }
   res.json(updatedContact);
 };
 
 module.exports = {
-  getList: ctrlWrapper(getList),
-  getById: ctrlWrapper(getById),
-  add: ctrlWrapper(add),
-  deleteById: ctrlWrapper(deleteById),
-  updateById: ctrlWrapper(updateById),
+  getContactsList: ctrlWrapper(getContactsList),
+  getContactById: ctrlWrapper(getContactById),
+  addContact: ctrlWrapper(addContact),
+  deleteContactById: ctrlWrapper(deleteContactById),
+  updateContactById: ctrlWrapper(updateContactById),
 };
