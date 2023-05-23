@@ -1,7 +1,7 @@
 const { HttpError, ctrlWrapper } = require("../utils");
 const { Contact } = require("../models/contact");
 
-const getContactsList = async (req, res, next) => {
+const getContacts = async (req, res, next) => {
   const contacts = await Contact.find();
   res.json(contacts);
 };
@@ -52,7 +52,7 @@ const updateStatusContact = async (req, res, next) => {
 };
 
 module.exports = {
-  getContactsList: ctrlWrapper(getContactsList),
+  getContacts: ctrlWrapper(getContacts),
   getContactById: ctrlWrapper(getContactById),
   addContact: ctrlWrapper(addContact),
   deleteContactById: ctrlWrapper(deleteContactById),
