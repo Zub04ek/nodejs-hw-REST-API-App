@@ -1,6 +1,6 @@
 const express = require("express");
 const {
-  getContactsList,
+  getContacts,
   getContactById,
   addContact,
   deleteContactById,
@@ -8,13 +8,13 @@ const {
   updateStatusContact,
 } = require("../../controllers/contactsControllers");
 const { validateBody, isValidId } = require("../../middlewares");
-const { schemas } = require("../../models/contact");
+const { schemas } = require("../../schemas/contactsSchemas");
 
 const router = express.Router();
 
 router
   .route("/")
-  .get(getContactsList)
+  .get(getContacts)
   .post(validateBody(schemas.addSchema), addContact);
 
 router
