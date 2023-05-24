@@ -19,11 +19,7 @@ const updateFavoriteSchema = Joi.object({
   }),
 });
 
-const schemas = {
+module.exports = {
   addSchema,
   updateFavoriteSchema,
-};
-
-module.exports = {
-  schemas,
 };
