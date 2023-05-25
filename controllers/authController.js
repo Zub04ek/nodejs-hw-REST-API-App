@@ -55,7 +55,16 @@ const login = async (req, res, next) => {
   });
 };
 
+const updateSubscription = async (req, res, next) => {
+  const { user } = req;
+  await User.updateOne(user, req.body);
+  res.json({
+    message: `Subscription updated successfully!`,
+  });
+};
+
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
+  updateSubscription: ctrlWrapper(updateSubscription),
 };
