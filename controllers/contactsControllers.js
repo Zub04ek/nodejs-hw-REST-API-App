@@ -3,10 +3,13 @@ const { Contact } = require("../models/contact");
 
 const getContacts = async (req, res, next) => {
   const { _id: owner } = req.user;
-  const contacts = await Contact.find({ owner }).populate(
-    "owner",
-    "email subscription"
-  );
+  const { page = 1, limit = 20, favorite } = req.query;
+  const skip = (page - 1) * limit;
+  const filter = favorite ? { owner, favorite } : { owner };
+  const contacts = await Contact.find(filter, "", {
+    skip,
+    limit,
+  }).populate("owner", "email subscription");
   res.json(contacts);
 };
 
