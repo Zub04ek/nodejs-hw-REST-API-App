@@ -9,13 +9,17 @@ const {
 const {
   register,
   login,
+  getCurrent,
   updateSubscription,
+  logout,
 } = require("../../controllers/authController");
 
 const router = express.Router();
 
 router.post("/register", validateBody(registerSchema), register);
 router.post("/login", validateBody(loginSchema), login);
+router.get("/current", authenticate, getCurrent);
+router.post("/logout", authenticate, logout);
 router.patch(
   "/subscription",
   authenticate,
