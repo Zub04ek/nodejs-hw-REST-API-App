@@ -1,8 +1,15 @@
 const { HttpError, ctrlWrapper } = require("../utils");
 const { Contact } = require("../models/contact");
 
-const getContactsList = async (req, res, next) => {
-  const contacts = await Contact.find();
+const getContacts = async (req, res, next) => {
+  const { _id: owner } = req.user;
+  const { page = 1, limit = 20, favorite } = req.query;
+  const skip = (page - 1) * limit;
+  const filter = favorite ? { owner, favorite } : { owner };
+  const contacts = await Contact.find(filter, "", {
+    skip,
+    limit,
+  }).populate("owner", "email subscription");
   res.json(contacts);
 };
 
@@ -16,7 +23,8 @@ const getContactById = async (req, res, next) => {
 };
 
 const addContact = async (req, res, next) => {
-  const newContact = await Contact.create(req.body);
+  const { _id: owner } = req.user;
+  const newContact = await Contact.create({ ...req.body, owner });
   res.status(201).json(newContact);
 };
 
@@ -52,7 +60,7 @@ const updateStatusContact = async (req, res, next) => {
 };
 
 module.exports = {
-  getContactsList: ctrlWrapper(getContactsList),
+  getContacts: ctrlWrapper(getContacts),
   getContactById: ctrlWrapper(getContactById),
   addContact: ctrlWrapper(addContact),
   deleteContactById: ctrlWrapper(deleteContactById),
