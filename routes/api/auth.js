@@ -5,15 +5,17 @@ const {
   registerSchema,
   loginSchema,
   updateSubscriptionSchema,
+  userEmailSchema,
 } = require("../../schemas/authSchemas");
 const {
   register,
+  verify,
+  resendVerifyEmail,
   login,
   getCurrent,
   updateSubscription,
   logout,
   updateAvatar,
-  verify,
 } = require("../../controllers/authController");
 
 const router = express.Router();
@@ -30,5 +32,6 @@ router.patch(
 );
 router.patch("/avatars", authenticate, upload.single("avatar"), updateAvatar);
 router.get("/verify/:verificationToken", verify);
+router.post("/verify", validateBody(userEmailSchema), resendVerifyEmail);
 
 module.exports = router;
