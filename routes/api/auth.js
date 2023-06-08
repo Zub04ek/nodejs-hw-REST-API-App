@@ -13,6 +13,7 @@ const {
   updateSubscription,
   logout,
   updateAvatar,
+  verify,
 } = require("../../controllers/authController");
 
 const router = express.Router();
@@ -28,5 +29,6 @@ router.patch(
   updateSubscription
 );
 router.patch("/avatars", authenticate, upload.single("avatar"), updateAvatar);
+router.get("/verify/:verificationToken", verify);
 
 module.exports = router;
